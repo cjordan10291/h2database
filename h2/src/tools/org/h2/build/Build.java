@@ -1091,7 +1091,7 @@ public class Build extends BuildBase {
         copy("temp/WEB-INF", files("src/tools/WEB-INF/web.xml"), "src/tools/WEB-INF");
         copy("temp", files("src/tools/WEB-INF/console.html"), "src/tools/WEB-INF");
         copy("temp/WEB-INF/lib", files("bin/h2" + getJarSuffix()), "bin");
-        copy("temp/WEB-INF/lib", files("libs/jdbcDrivers"), "bin");
+        copy("temp/WEB-INF/lib", files("libs/jdbcDrivers"), "libs/jdbcDrivers");
         FileList files = files("temp").exclude("temp/org*").exclude("temp/META-INF*");
         files.exclude("*.DS_Store");
         jar("bin/h2console.war", files, "temp");
