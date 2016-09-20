@@ -862,15 +862,15 @@ public class Build extends BuildBase {
     }
 
     private void resources(boolean clientOnly, boolean basicOnly) {
-        if (!clientOnly) {
-            java("org.h2.build.doc.GenerateHelp", null);
-            javadoc("-sourcepath", "src/main", "org.h2.tools", "org.h2.jmx",
-                    "-classpath",
-                    "ext/lucene-core-3.6.2.jar" +
-                    File.pathSeparator + "ext/jts-core-1.14.0.jar",
-                    "-docletpath", "bin" + File.pathSeparator + "temp",
-                    "-doclet", "org.h2.build.doclet.ResourceDoclet");
-        }
+//        if (!clientOnly) {
+//            java("org.h2.build.doc.GenerateHelp", null);
+//            javadoc("-sourcepath", "src/main", "org.h2.tools", "org.h2.jmx",
+//                    "-classpath",
+//                    "ext/lucene-core-3.6.2.jar" +
+//                    File.pathSeparator + "ext/jts-core-1.14.0.jar",
+//                    "-docletpath", "bin" + File.pathSeparator + "temp",
+//                    "-doclet", "org.h2.build.doclet.ResourceDoclet");
+//        }
         FileList files = files("src/main").
             exclude("*.MF").
             exclude("*.java").
