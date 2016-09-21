@@ -636,29 +636,10 @@ public class WebServer implements Service {
      * @return the list
      */
     synchronized ArrayList<ConnectionInfo> getSettings() {
-        ArrayList<ConnectionInfo> settings = New.arrayList();
-        if (connInfoMap.size() == 0) {
-            Properties prop = loadProperties();
-            if (prop.size() == 0) {
-                for (String gen : GENERIC) {
-                    ConnectionInfo info = new ConnectionInfo(gen);
-                    settings.add(info);
-                    updateSetting(info);
-                }
-            } else {
-                for (int i = 0;; i++) {
-                    String data = prop.getProperty(String.valueOf(i));
-                    if (data == null) {
-                        break;
-                    }
-                    ConnectionInfo info = new ConnectionInfo(data);
-                    settings.add(info);
-                    updateSetting(info);
-                }
-            }
-        } else {
-            settings.addAll(connInfoMap.values());
-        }
+    	ConnectionInfoDao dao = new ConnectionInfoDao();
+    	// FIXME: get this for real from request somehow???
+    	String userName = "test";
+        ArrayList<ConnectionInfo> settings = dao.getConnectionInfosForEuid(userName);
         Collections.sort(settings);
         return settings;
     }

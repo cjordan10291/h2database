@@ -32,8 +32,13 @@ public class ConnectionInfo implements Comparable<ConnectionInfo> {
     /**
      * The connection display name.
      */
-    String name;
+    public String name;
 
+    /**
+     * Auto key for db table these settings are stored in.
+     */
+    public Long id;
+    
     /**
      * The last time this connection was used.
      */

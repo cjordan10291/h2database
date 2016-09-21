@@ -17,6 +17,9 @@ Initial Developer: H2 Group
 </head>
 <body style="margin: 20px">
     <form name="login" method="post" action="login.do?jsessionid=${sessionId}" id="login">
+    
+    <input type="hidden" name="connectionInfoId" value="${connectionInfoId }"/>
+    
     <p>                    <select name="language" size="1"
                         onchange="javascript:document.location='index.do?jsessionid=${sessionId}&amp;language='+login.language.value;"
                     >

@@ -29,6 +29,7 @@ public class WebServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private transient WebServer server;
+    private transient ConnectionInfoDao connectionInfoDao;
 
     @Override
     public void init() {
@@ -51,6 +52,8 @@ public class WebServlet extends HttpServlet {
         server = new WebServer();
         server.setAllowChunked(false);
         server.init(args);
+        
+        connectionInfoDao = new ConnectionInfoDao();
     }
 
     @Override

@@ -468,6 +468,8 @@ public class WebApp {
         session.put("driver", PageParser.escapeHtmlData(info.driver));
         session.put("url", PageParser.escapeHtmlData(info.url));
         session.put("user", PageParser.escapeHtmlData(info.user));
+        session.put("connectionInfoId", info.id == null ? "" : String.valueOf(info.id));
+        
         return "index.jsp";
     }
 
@@ -1762,6 +1764,8 @@ public class WebApp {
         info.driver = attributes.getProperty("driver", "");
         info.url = attributes.getProperty("url", "");
         info.user = attributes.getProperty("user", "");
+        String idAsString = attributes.getProperty("connectionInfoId",null);
+        info.id = idAsString != null ? Long.valueOf(idAsString) : null;
         server.updateSetting(info);
         attributes.put("setting", info.name);
         server.saveProperties(null);
