@@ -172,17 +172,17 @@ public class WebApp {
         return file;
     }
 
-    private static String getComboBox(String[] elements, String selected) {
+    private static String getComboBox(ArrayList<ConnectionInfo> connectionInfos, Long id) {
         StringBuilder buff = new StringBuilder();
-        for (String value : elements) {
+        for (ConnectionInfo info : connectionInfos) {
             buff.append("<option value=\"").
-                append(PageParser.escapeHtmlData(value)).
+                append(String.valueOf(info.id)).
                 append('\"');
-            if (value.equals(selected)) {
+            if (info.id.equals(id)) {
                 buff.append(" selected");
             }
             buff.append('>').
-                append(PageParser.escapeHtml(value)).
+                append(PageParser.escapeHtml(info.name)).
                 append("</option>");
         }
         return buff.toString();
@@ -452,22 +452,38 @@ public class WebApp {
             language = headerLanguage;
         }
         session.put("languageCombo", getComboBox(languageArray, language));
+        
+        ConnectionInfoDao connectionInfoDao = new ConnectionInfoDao();
+        
+        ArrayList<ConnectionInfo> connectionInfos = connectionInfoDao.getConnectionInfosForEuid("testUser");
+        
         String[] settingNames = server.getSettingNames();
-        String setting = attributes.getProperty("setting");
-        if (setting == null && settingNames.length > 0) {
-            setting = settingNames[0];
-        }
-        String combobox = getComboBox(settingNames, setting);
+        String idAsString = attributes.getProperty("setting");
+        
+        Long id = idAsString == null || "".equals(idAsString.trim()) ? null : Long.valueOf(idAsString);
+        
+        String combobox = getComboBox(connectionInfos, id);
         session.put("settingsList", combobox);
-        ConnectionInfo info = server.getSetting(setting);
+        
+        
+        ConnectionInfo info = null; 
+        for (ConnectionInfo connInfo: connectionInfos) {
+        	if (id != null && id.equals(connInfo.id)) {
+        		info = connInfo;
+        		break;
+        	}
+        }
+        
+        
         if (info == null) {
             info = new ConnectionInfo();
         }
-        session.put("setting", PageParser.escapeHtmlData(setting));
-        session.put("name", PageParser.escapeHtmlData(setting));
+        session.put("setting", PageParser.escapeHtmlData(String.valueOf(info.id)));
+        session.put("name", PageParser.escapeHtmlData(info.name));
         session.put("driver", PageParser.escapeHtmlData(info.driver));
         session.put("url", PageParser.escapeHtmlData(info.url));
         session.put("user", PageParser.escapeHtmlData(info.user));
+        session.put("euid", PageParser.escapeHtmlData(info.euid));
         session.put("connectionInfoId", info.id == null ? "" : String.valueOf(info.id));
         
         return "index.jsp";
@@ -1764,9 +1780,18 @@ public class WebApp {
         info.driver = attributes.getProperty("driver", "");
         info.url = attributes.getProperty("url", "");
         info.user = attributes.getProperty("user", "");
+        // FIXME: Just defaulting to "testUser" until we find how to pass the EUID in from the Confluence iFrame
+        info.euid = attributes.getProperty("euid", "testUser");
         String idAsString = attributes.getProperty("connectionInfoId",null);
+        
         info.id = idAsString != null ? Long.valueOf(idAsString) : null;
+        
+        
+        ConnectionInfoDao connectionInfoDao = new ConnectionInfoDao();
+        connectionInfoDao.persistConnectionInfo(info.id, info.euid, info.name, info.driver, info.url, info.user);
         server.updateSetting(info);
+        
+        
         attributes.put("setting", info.name);
         server.saveProperties(null);
         return "index.do";

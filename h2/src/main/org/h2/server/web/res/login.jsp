@@ -19,6 +19,7 @@ Initial Developer: H2 Group
     <form name="login" method="post" action="login.do?jsessionid=${sessionId}" id="login">
     
     <input type="hidden" name="connectionInfoId" value="${connectionInfoId }"/>
+    <input type="hidden" name="euid" value="${euid }"/>
     
     <p>                    <select name="language" size="1"
                         onchange="javascript:document.location='index.do?jsessionid=${sessionId}&amp;language='+login.language.value;"
@@ -41,6 +42,7 @@ Initial Developer: H2 Group
                         style="width:300px"
                         onchange="javascript:document.location='index.do?jsessionid=${sessionId}&amp;setting='+login.setting.value;"
                     >
+                    <option value="">--Choose--</option>
                     ${settingsList}
                     </select>
                 </td>
