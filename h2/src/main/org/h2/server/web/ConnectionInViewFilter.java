@@ -17,13 +17,13 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ConnectionInViewFilter implements Filter {
 
-	private static final String DRIVER_CLASS_NAME = "oracle.jdbc.driver.OracleDriver";
+	private static final String DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
 	
-	private static final String DB_URL = "jdbc:oracle:thin:@172.22.4.106:1521:KROAUOPM";
+	private static final String DB_URL = "jdbc:mysql://10.3.188.85:3306/cf_03fc7b21_27cf_4bb5_b7fe_d8ce98e25bb8?user=uPKhp11qR6KI2cya&password=B7YZaqrpFGMl057L";
 	
-	private static final String DB_USER = "c##kroger_admin";
+	private static final String DB_USER = "uPKhp11qR6KI2cya";
 	
-	private static final String DB_PASS = "kroger123";
+	private static final String DB_PASS = "B7YZaqrpFGMl057L";
 	
 	private FilterConfig filterConfig = null;
 
