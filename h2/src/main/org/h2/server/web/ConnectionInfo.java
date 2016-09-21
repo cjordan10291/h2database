@@ -14,6 +14,13 @@ import org.h2.util.StringUtils;
  * This class is used by the H2 Console.
  */
 public class ConnectionInfo implements Comparable<ConnectionInfo> {
+    
+    
+    /** 
+     * The euid of the owner
+     */
+    public String euid;
+    
     /**
      * The driver class name.
      */

@@ -37,7 +37,7 @@ public class ConnectionInfoDao
             while (rs.next())
             {
                 ConnectionInfo connectionInfo = new ConnectionInfo();
-                connectionInfo.driver = rs.getString("euid");
+                connectionInfo.euid = rs.getString("euid");
                 connectionInfo.driver = rs.getString("connection_driver");
                 connectionInfo.url = rs.getString("connection_url");
                 connectionInfo.user = rs.getString("connection_user");
@@ -82,7 +82,7 @@ public class ConnectionInfoDao
         }
     }
 
-    public boolean saveConnectionInfo(String euid, String connectionName,
+    private boolean saveConnectionInfo(String euid, String connectionName,
         String connectionDriverName, String connectionUrl, String connectionUser)
     {
         boolean result = true;
@@ -92,6 +92,7 @@ public class ConnectionInfoDao
         StringBuilder sqlSb = new StringBuilder(
             "insert into connection_info (euid, connection_name, connection_driver, connection_url, connection_user) ");
         sqlSb.append(" (");
+        
 
 
         PreparedStatement stmt = null;
