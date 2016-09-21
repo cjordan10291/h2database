@@ -3,6 +3,7 @@ package org.h2.server.web;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import org.h2.util.StringUtils;
@@ -85,7 +86,7 @@ public class ConnectionInfoDao
         }
     }
 
-    private void saveConnectionInfo(String euid, String connectionName, String connectionDriverName,
+    private Long saveConnectionInfo(String euid, String connectionName, String connectionDriverName,
         String connectionUrl, String connectionUser)
     {
         Connection connection = ConnectionInViewFilter.getConnection();
@@ -96,15 +97,28 @@ public class ConnectionInfoDao
             "insert into connection_info (euid, connection_name, connection_driver, connection_url, connection_user) Values (?, ? , ?, ?, ?)");
 
         PreparedStatement stmt = null;
+        
+        Long result = null;
 
         try
         {
-            stmt = connection.prepareStatement(sqlSb.toString());
+            stmt = connection.prepareStatement(sqlSb.toString(), Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, euid);
             stmt.setString(2, connectionName);
             stmt.setString(3, connectionDriverName);
             stmt.setString(4, connectionUrl);
             stmt.setString(5, connectionUser);
+            
+            if (!stmt.execute())
+            {
+                throw new RuntimeException("Why did stmt.execute() return false for save?");
+            }
+            ResultSet keys = stmt.getGeneratedKeys();
+            
+            if (keys.next())
+            {
+                result =  keys.getLong(1);
+            }
         }
         catch (Exception e)
         {
@@ -127,14 +141,17 @@ public class ConnectionInfoDao
                 e.printStackTrace(System.out);
             }
         }
+        
+        return result;
     }
     
     
-    private void updateConnectionInfo(Long id, String euid, String connectionName, String connectionDriverName,
+    private Long updateConnectionInfo(Long id, String euid, String connectionName, String connectionDriverName,
         String connectionUrl, String connectionUser)
     {
         
         ConnectionInfo connectionInfo = getConnectionInfoById(id);
+        Long result = null;
         
         if (null == connectionInfo)
         {
@@ -163,6 +180,17 @@ public class ConnectionInfoDao
             stmt.setString(3, connectionDriverName);
             stmt.setString(4, connectionUrl);
             stmt.setString(5, connectionUser);
+            
+            if (!stmt.execute())
+            {
+                throw new RuntimeException("Why did stmt.execute() return false for update?");
+            }
+            
+            if (!stmt.execute())
+            {
+                throw new RuntimeException("Why did stmt.execute() return false for save?");
+            }
+            result = id;
         }
         catch (Exception e)
         {
@@ -185,23 +213,25 @@ public class ConnectionInfoDao
                 e.printStackTrace(System.out);
             }
         }
+        
+        return result;
     }
 
 
 
-    public void persistConnectionInfo(Long connectionId, String euid, String connectionName,
+    public Long persistConnectionInfo(Long connectionId, String euid, String connectionName,
         String connectionDriverName, String connectionUrl, String connectionUser)
     {
 
 
         if (connectionId == null)
         {
-            saveConnectionInfo(euid, connectionName, connectionDriverName, connectionUrl,
+            return saveConnectionInfo(euid, connectionName, connectionDriverName, connectionUrl,
                 connectionUser);
         }
         else
         {
-            updateConnectionInfo(connectionId, euid, connectionName, connectionDriverName,
+            return updateConnectionInfo(connectionId, euid, connectionName, connectionDriverName,
                 connectionUrl, connectionUser);
         }
 

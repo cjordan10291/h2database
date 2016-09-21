@@ -10,6 +10,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -29,6 +30,8 @@ public class ConnectionInViewFilter implements Filter {
 
 	private static ThreadLocal<Connection> connectionThreadLocal = new ThreadLocal<Connection>();
 	
+	private static ThreadLocal<String> euidThreadLocal = new ThreadLocal<String>();
+	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		this.filterConfig = filterConfig;
@@ -47,6 +50,26 @@ public class ConnectionInViewFilter implements Filter {
 			connection.setAutoCommit(true);
 
 			connectionThreadLocal.set(connection);
+			
+			 
+			
+            if (httpServletRequest.getParameter("euid") != null)
+            {
+                euidThreadLocal.set(httpServletRequest.getParameter("euid"));
+            }
+            else
+            {
+    			Cookie[] cookieArray = httpServletRequest.getCookies();
+    			for (Cookie cookie: cookieArray)
+    			{
+    			    if ( "euidThreadLocal".equals(cookie.getName()))
+    			    {
+    			        euidThreadLocal.set(cookie.getValue());
+    			    }
+    			        
+    			}
+            }
+			
 			
 			filterChain.doFilter(request, response);
 
@@ -76,6 +99,11 @@ public class ConnectionInViewFilter implements Filter {
 
 	public static Connection getConnection() {
 		return connectionThreadLocal.get();
+	}
+	
+	public static String getEuid()
+	{
+	    return euidThreadLocal.get();
 	}
 	
 }

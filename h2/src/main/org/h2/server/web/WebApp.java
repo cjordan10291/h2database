@@ -455,7 +455,7 @@ public class WebApp {
         
         ConnectionInfoDao connectionInfoDao = new ConnectionInfoDao();
         
-        ArrayList<ConnectionInfo> connectionInfos = connectionInfoDao.getConnectionInfosForEuid("testUser");
+        ArrayList<ConnectionInfo> connectionInfos = connectionInfoDao.getConnectionInfosForEuid(ConnectionInViewFilter.getEuid());
         
         String[] settingNames = server.getSettingNames();
         String idAsString = attributes.getProperty("setting");
@@ -1780,8 +1780,7 @@ public class WebApp {
         info.driver = attributes.getProperty("driver", "");
         info.url = attributes.getProperty("url", "");
         info.user = attributes.getProperty("user", "");
-        // FIXME: Just defaulting to "testUser" until we find how to pass the EUID in from the Confluence iFrame
-        info.euid = attributes.getProperty("euid", "testUser");
+        info.euid = attributes.getProperty("euid", ConnectionInViewFilter.getEuid());
         String idAsString = attributes.getProperty("connectionInfoId",null);
         
         info.id = idAsString != null ? Long.valueOf(idAsString) : null;
