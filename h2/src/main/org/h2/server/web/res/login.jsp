@@ -25,10 +25,7 @@ Initial Developer: H2 Group
                     >
                     ${languageCombo}
                     </select>
-    &nbsp;&nbsp; <a href="admin.do?jsessionid=${sessionId}">${text.login.goAdmin}</a>
-<!--
--->
-    &nbsp;&nbsp; <a href="tools.jsp?jsessionid=${sessionId}">${text.a.tools}</a>
+    &nbsp;&nbsp;
     &nbsp;&nbsp; <a href="help.jsp?jsessionid=${sessionId}">${text.a.help}</a>
     </p>
         <table class="login" cellspacing="0" cellpadding="0">
