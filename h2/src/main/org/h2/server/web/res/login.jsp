@@ -40,7 +40,7 @@ Initial Developer: H2 Group
                 <td class="login">
                     <select name="connectionInfoId" size="1"
                         style="width:300px"
-                        onchange="javascript:document.location='index.do?jsessionid=${sessionId}&amp;setting='+login.setting.value;"
+                        onchange="javascript:document.location='index.do?jsessionid=${sessionId}&amp;connectionInfoId='+login.connectionInfoId.value;"
                     >
                     <option value="">--Choose--</option>
                     ${settingsList}

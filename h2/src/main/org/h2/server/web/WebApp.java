@@ -459,7 +459,7 @@ public class WebApp {
         
         String[] settingNames = server.getSettingNames();
         String idAsString = attributes.getProperty("connectionInfoId");
-        
+
         Long id = idAsString == null || "".equals(idAsString.trim()) ? null : Long.valueOf(idAsString);
         
         String combobox = getComboBox(connectionInfos, id);
