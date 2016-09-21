@@ -1780,9 +1780,11 @@ public class WebApp {
         info.driver = attributes.getProperty("driver", "");
         info.url = attributes.getProperty("url", "");
         info.user = attributes.getProperty("user", "");
-        info.euid = attributes.getProperty("euid", ConnectionInViewFilter.getEuid());
+        info.euid = ConnectionInViewFilter.getEuid();
+
+        System.out.println("euid:" + info.euid);
+        
         String idAsString = attributes.getProperty("connectionInfoId",null);
-        System.out.println(info.name);
         info.id = idAsString != null && !"".equals(idAsString.trim())? Long.valueOf(idAsString) : null;
         
         

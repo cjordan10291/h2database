@@ -165,7 +165,7 @@ public class ConnectionInfoDao
         StringBuilder sqlSb = new StringBuilder(
             // "insert into connection_info (euid, connection_name, connection_driver,
             // connection_url, connection_user) Values (");
-            "insert into connection_info (euid, connection_name, connection_driver, connection_url, connection_user) Values (?, ? , ?, ?, ?)");
+            "update connection_info set euid = ? , connection_name=?, connection_driver=?, connection_url=?, connection_user=? where id=?");
 
         PreparedStatement stmt = null;
 
@@ -177,6 +177,7 @@ public class ConnectionInfoDao
             stmt.setString(3, connectionDriverName);
             stmt.setString(4, connectionUrl);
             stmt.setString(5, connectionUser);
+            stmt.setLong(6, id);
             
             stmt.execute();
             
