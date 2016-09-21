@@ -75,7 +75,7 @@ public class ConnectionInViewFilter implements Filter {
 	}
 
 	public static Connection getConnection() {
-		return null;
+		return connectionThreadLocal.get();
 	}
 	
 }
