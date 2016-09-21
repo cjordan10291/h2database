@@ -638,7 +638,7 @@ public class WebServer implements Service {
     synchronized ArrayList<ConnectionInfo> getSettings() {
     	ConnectionInfoDao dao = new ConnectionInfoDao();
     	// FIXME: get this for real from request somehow???
-    	String userName = "testUser";
+    	String userName = ConnectionInViewFilter.getEuid();
         ArrayList<ConnectionInfo> settings = dao.getConnectionInfosForEuid(userName);
         Collections.sort(settings);
         return settings;
