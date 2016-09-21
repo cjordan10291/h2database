@@ -458,7 +458,7 @@ public class WebApp {
         ArrayList<ConnectionInfo> connectionInfos = connectionInfoDao.getConnectionInfosForEuid("testUser");
         
         String[] settingNames = server.getSettingNames();
-        String idAsString = attributes.getProperty("setting");
+        String idAsString = attributes.getProperty("connectionInfoId");
         
         Long id = idAsString == null || "".equals(idAsString.trim()) ? null : Long.valueOf(idAsString);
         
@@ -1783,16 +1783,18 @@ public class WebApp {
         // FIXME: Just defaulting to "testUser" until we find how to pass the EUID in from the Confluence iFrame
         info.euid = attributes.getProperty("euid", "testUser");
         String idAsString = attributes.getProperty("connectionInfoId",null);
-        
-        info.id = idAsString != null ? Long.valueOf(idAsString) : null;
+        System.out.println(info.name);
+        info.id = idAsString != null && !"".equals(idAsString.trim())? Long.valueOf(idAsString) : null;
         
         
         ConnectionInfoDao connectionInfoDao = new ConnectionInfoDao();
-        connectionInfoDao.persistConnectionInfo(info.id, info.euid, info.name, info.driver, info.url, info.user);
+        Long savedConnId = connectionInfoDao.persistConnectionInfo(info.id, info.euid, info.name, info.driver, info.url, info.user);
         server.updateSetting(info);
         
         
         attributes.put("setting", info.name);
+        attributes.put("name", info.name);
+        attributes.put("connectionInfoId", String.valueOf(savedConnId));
         server.saveProperties(null);
         return "index.do";
     }

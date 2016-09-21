@@ -18,7 +18,7 @@ Initial Developer: H2 Group
 <body style="margin: 20px">
     <form name="login" method="post" action="login.do?jsessionid=${sessionId}" id="login">
     
-    <input type="hidden" name="connectionInfoId" value="${connectionInfoId }"/>
+
     <input type="hidden" name="euid" value="${euid }"/>
     
     <p>                    <select name="language" size="1"
@@ -38,7 +38,7 @@ Initial Developer: H2 Group
             <tr class="login">
                 <td class="login">${text.login.savedSetting}:</td>
                 <td class="login">
-                    <select name="setting" size="1"
+                    <select name="connectionInfoId" size="1"
                         style="width:300px"
                         onchange="javascript:document.location='index.do?jsessionid=${sessionId}&amp;setting='+login.setting.value;"
                     >
