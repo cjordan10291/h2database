@@ -278,8 +278,7 @@ public class WebServer implements Service {
                 "webPort", Constants.DEFAULT_HTTP_PORT);
         ssl = SortedProperties.getBooleanProperty(prop,
                 "webSSL", false);
-        allowOthers = SortedProperties.getBooleanProperty(prop,
-                "webAllowOthers", false);
+        allowOthers = true;
         commandHistoryString = prop.getProperty(COMMAND_HISTORY);
         for (int i = 0; args != null && i < args.length; i++) {
             String a = args[i];

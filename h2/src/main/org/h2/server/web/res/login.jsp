@@ -15,8 +15,43 @@ Initial Developer: H2 Group
         }
     </script>
 </head>
-<body style="margin: 20px">
+<body style="margin: 20px" onload="krogerDbGuiOnLoad()">
+
+	<script>
+	
+		function krogerDbGuiOnLoad() {
+			var connectionId = document.getElementById("krogerDbGuiConnectionSelect").value;
+			if (connectionId) {
+				var password = krogerDbGuiReadCookie("connection" + connectionId + "pass");
+				document.getElementById("krogerDbGuiConnectionPassword").value = password;
+			}
+		}
+	
+		function krogerDbGuiReadCookie(name) {
+		    var nameEQ = name + "=";
+		    var ca = document.cookie.split(';');
+		    for(var i=0;i < ca.length;i++) {
+		        var c = ca[i];
+		        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+		    }
+		    return null;
+		}
+		
+		function krogerDbGuiOnConnect() {
+			alert("?");
+			var connectionId = document.getElementById("krogerDbGuiConnectionSelect").value;
+			var password = document.getElementById("krogerDbGuiConnectionPassword").value;
+			alert(password);
+			document.cookie = "connection" + connectionId + "pass=" + password;
+		}
+	</script>
+
+
+
     <form name="login" method="post" action="login.do?jsessionid=${sessionId}" id="login">
+
+
     
 
     <input type="hidden" name="euid" value="${euid }"/>
@@ -38,7 +73,7 @@ Initial Developer: H2 Group
             <tr class="login">
                 <td class="login">${text.login.savedSetting}:</td>
                 <td class="login">
-                    <select name="connectionInfoId" size="1"
+                    <select name="connectionInfoId" size="1" id="krogerDbGuiConnectionSelect"
                         style="width:300px"
                         onchange="javascript:document.location='index.do?jsessionid=${sessionId}&amp;connectionInfoId='+login.connectionInfoId.value;"
                     >
@@ -81,7 +116,7 @@ Initial Developer: H2 Group
             <tr class="login">
                 <td class="login"></td>
                 <td class="login">
-                    <input type="submit" class="button" value="${text.login.connect}" />
+                    <input type="submit" class="button" value="${text.login.connect}" onclick="krogerDbGuiOnConnect()"/>
                     &nbsp;
                     <input type="button" class="button" value="${text.login.testConnection}" onclick="javascript:document.login.action='test.do?jsessionid=${sessionId}';submit()" />
                     <br />
