@@ -109,10 +109,7 @@ public class ConnectionInfoDao
             stmt.setString(4, connectionUrl);
             stmt.setString(5, connectionUser);
             
-            if (!stmt.execute())
-            {
-                throw new RuntimeException("Why did stmt.execute() return false for save?");
-            }
+            stmt.execute();
             ResultSet keys = stmt.getGeneratedKeys();
             
             if (keys.next())
@@ -181,15 +178,8 @@ public class ConnectionInfoDao
             stmt.setString(4, connectionUrl);
             stmt.setString(5, connectionUser);
             
-            if (!stmt.execute())
-            {
-                throw new RuntimeException("Why did stmt.execute() return false for update?");
-            }
+            stmt.execute();
             
-            if (!stmt.execute())
-            {
-                throw new RuntimeException("Why did stmt.execute() return false for save?");
-            }
             result = id;
         }
         catch (Exception e)

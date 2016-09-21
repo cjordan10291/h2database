@@ -12,6 +12,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.h2.util.StringUtils;
 
 
 
@@ -42,7 +45,8 @@ public class ConnectionInViewFilter implements Filter {
 			throws IOException, ServletException {
 
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-
+		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+		
 		try {
 			Class.forName(DRIVER_CLASS_NAME);
 			
@@ -51,26 +55,58 @@ public class ConnectionInViewFilter implements Filter {
 
 			connectionThreadLocal.set(connection);
 			
-			 
+			String euidFromRequest = httpServletRequest.getParameter("euid");
 			
-            if (httpServletRequest.getParameter("euid") != null)
+            if (!StringUtils.isNullOrEmpty(euidFromRequest))
             {
-                euidThreadLocal.set(httpServletRequest.getParameter("euid"));
-            }
-            else
-            {
-    			Cookie[] cookieArray = httpServletRequest.getCookies();
-    			for (Cookie cookie: cookieArray)
-    			{
-    			    if ( "euidThreadLocal".equals(cookie.getName()))
-    			    {
-    			        euidThreadLocal.set(cookie.getValue());
-    			    }
-    			        
-    			}
+            	System.out.println("Setting from querystring" + euidFromRequest);
+            	
+            	Cookie[] cookieArray = httpServletRequest.getCookies();
+
+				System.out.println(cookieArray);
+				boolean cookieSet = false;
+				if (cookieArray != null) {
+	    			for (Cookie cookie: cookieArray)
+	    			{
+	    			    if ( "euid".equals(cookie.getName()))
+	    			    {
+	    			    	cookie.setValue(euidFromRequest);
+	    			    	cookieSet = true;
+	    			    	break;
+	    			    }
+	    			        
+	    			}
+				}
+            	
+            	if (!cookieSet) {
+                	Cookie aCookie = new Cookie("euid", euidFromRequest);
+            		httpServletResponse.addCookie(aCookie);
+            	}
+            	euidThreadLocal.set(euidFromRequest);
+            } else {
+
+				Cookie[] cookieArray = httpServletRequest.getCookies();
+
+				System.out.println(cookieArray);
+				
+				if (cookieArray != null) {
+	    			for (Cookie cookie: cookieArray)
+	    			{
+	    			    if ( "euid".equals(cookie.getName()))
+	    			    {
+	    			    	System.out.println(cookie.getValue());
+	    			    	if (!StringUtils.isNullOrEmpty(cookie.getValue())) {
+		    			        euidThreadLocal.set(cookie.getValue());
+		    			        break;
+	    			    	}
+	    			    }
+	    			        
+	    			}
+				}
             }
 			
-			
+            System.out.println("Did it find a euid?" + euidThreadLocal.get());
+            
 			filterChain.doFilter(request, response);
 
 			try {
