@@ -228,9 +228,50 @@ public class ConnectionInfoDao
 
     }
 
-    public boolean deleteConnectionInfo(Long connectionId, String euid)
+    public void deleteConnectionInfo(Long connectionId, String euid)
     {
-        return true;
+        
+        if ( null == connectionId)
+        {
+            return;
+        }
+        ConnectionInfo info = getConnectionInfoById(connectionId);
+        
+        if (null == info )
+        {
+            throw new RuntimeException("Connection info with id of " + connectionId +  " does not exist, please refresh");
+        }
+        
+        Connection connection = ConnectionInViewFilter.getConnection();
+        PreparedStatement statement = null;
+        
+        String sql = "delete from connection_info where id = ?;";
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setLong(1, connectionId);
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException("Error deleting connectionInfo with id:" + connectionId, e);
+        }
+        finally
+        {
+            try
+            {
+                if (null != statement)
+                {
+                    statement.close();
+                }
+            }
+            catch (Exception e)
+            {
+                // Just log it
+                System.out.println("Error closing prepared statement!");
+                e.printStackTrace(System.out);
+            }
+        }
+        
+        return;
     }
 
 
