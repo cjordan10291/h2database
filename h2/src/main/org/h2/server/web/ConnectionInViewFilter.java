@@ -21,13 +21,18 @@ import org.h2.util.StringUtils;
 
 public class ConnectionInViewFilter implements Filter {
 
-	private static final String DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
-	
-	private static final String DB_URL = "jdbc:mysql://10.3.188.85:3306/cf_03fc7b21_27cf_4bb5_b7fe_d8ce98e25bb8?user=uPKhp11qR6KI2cya&password=B7YZaqrpFGMl057L";
-	
-	private static final String DB_USER = "uPKhp11qR6KI2cya";
-	
-	private static final String DB_PASS = "B7YZaqrpFGMl057L";
+	// DevCon db
+//	private static final String DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
+//	private static final String DB_URL = "jdbc:mysql://10.3.188.85:3306/cf_03fc7b21_27cf_4bb5_b7fe_d8ce98e25bb8?user=uPKhp11qR6KI2cya&password=B7YZaqrpFGMl057L";
+//	private static final String DB_USER = "uPKhp11qR6KI2cya";
+//	private static final String DB_PASS = "B7YZaqrpFGMl057L";
+
+	// Wireless1 test db
+	private static final String DRIVER_CLASS_NAME = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+	private static final String DB_URL = "jdbc:sqlserver://N060SQLT05.KROGER.COM:1675;databaseName=ISS_DGateway_Data";
+	private static final String DB_USER = "svcDG";
+	private static final String DB_PASS = "svsDgT46";
+
 	
 	private FilterConfig filterConfig = null;
 

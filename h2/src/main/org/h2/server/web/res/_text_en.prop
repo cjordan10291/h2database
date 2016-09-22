@@ -73,6 +73,7 @@ login.savedSetting=Saved Settings
 login.settingName=Setting Name
 login.testConnection=Test Connection
 login.testSuccessful=Test successful
+login.update=Update
 login.welcome=H2 Console
 result.1row=1 row
 result.autoCommitOff=Auto commit is now OFF

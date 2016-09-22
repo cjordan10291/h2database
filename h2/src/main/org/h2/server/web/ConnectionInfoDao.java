@@ -250,6 +250,7 @@ public class ConnectionInfoDao
         try {
             statement = connection.prepareStatement(sql);
             statement.setLong(1, connectionId);
+            statement.execute();
         }
         catch (Exception e)
         {

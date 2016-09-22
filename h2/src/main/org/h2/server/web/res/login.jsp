@@ -24,6 +24,12 @@ Initial Developer: H2 Group
 			if (connectionId) {
 				var password = krogerDbGuiReadCookie("connection" + connectionId + "pass");
 				document.getElementById("krogerDbGuiConnectionPassword").value = password;
+				
+				document.getElementById("krogerDbGuiSaveUpdateButton").value = "${text.login.update}";
+				
+			} else {
+
+				document.getElementById("krogerDbGuiSaveUpdateButton").value = "${text.login.save}";
 			}
 		}
 	
@@ -39,11 +45,14 @@ Initial Developer: H2 Group
 		}
 		
 		function krogerDbGuiOnConnect() {
-			alert("?");
 			var connectionId = document.getElementById("krogerDbGuiConnectionSelect").value;
 			var password = document.getElementById("krogerDbGuiConnectionPassword").value;
-			alert(password);
 			document.cookie = "connection" + connectionId + "pass=" + password;
+		}
+		
+		
+		function krogerDbGuiOnNew() {
+			document.location='index.do?jsessionid=${sessionId}&amp;connectionInfoId=';
 		}
 	</script>
 
@@ -72,7 +81,7 @@ Initial Developer: H2 Group
             <tr><td  class="login" colspan="2"></td></tr>
             <tr class="login">
                 <td class="login">${text.login.savedSetting}:</td>
-                <td class="login">
+                <td class="login" nowrap style="vertical-align:top;">
                     <select name="connectionInfoId" size="1" id="krogerDbGuiConnectionSelect"
                         style="width:300px"
                         onchange="javascript:document.location='index.do?jsessionid=${sessionId}&amp;connectionInfoId='+login.connectionInfoId.value;"
@@ -80,14 +89,16 @@ Initial Developer: H2 Group
                     <option value="">--Choose--</option>
                     ${settingsList}
                     </select>
+                    
+                    <input type="button" class="button" value="New" id="krogerDbGuiNewConnectionButton" onclick="krogerDbGuiOnNew();"/>
                 </td>
             </tr>
             <tr class="login">
                 <td class="login">${text.login.settingName}:</td>
                 <td class="login">
                     <input type="text" name="name" value="${name}" style="width:200px;" />
-                    <input type="button" class="button" value="${text.login.save}" onclick="javascript:document.login.action='settingSave.do?jsessionid=${sessionId}';submit()" />
-                    <input type="button" class="button" value="${text.login.remove}" onclick="javascript:document.login.action='settingRemove.do?jsessionid=${sessionId}';submit()" />
+                    <input id="krogerDbGuiSaveUpdateButton" type="button" class="button" value="${text.login.save}" onclick="javascript:document.login.action='settingSave.do?jsessionid=${sessionId}';submit()" />
+                    <input type="button" class="button" value="${text.login.remove}" onclick="javascript:if (confirm('Are you sure you want to delete this connection configuration?')){document.login.action='settingRemove.do?jsessionid=${sessionId}';submit();}" />
                 </td>
             </tr>
             <tr class="login">
@@ -97,12 +108,16 @@ Initial Developer: H2 Group
             </tr>
             <tr class="login">
                 <td class="login">${text.login.driverClass}:</td>
-                <td class="login"><input type="text" name="driver" value="${driver}" style="width:300px;" /></td>
+                <td class="login">
+                	<select name="driver" style="width:300px;">
+                		<option value="">--Choose--</option>
+                		${jdbcDriversList}
+                	</select>
+                
+                </td>
             </tr>
             <tr class="login">
-                <td class="login">
-                    <a href="#" onclick="var x=document.getElementById('url').style;x.display=x.display==''?'none':'';">
-                        ${text.login.jdbcUrl}</a>:</td>
+                <td class="login">${text.login.jdbcUrl}:</td>
                 <td class="login"><input type="text" name="url" value="${url}" style="width:300px;" /></td>
             </tr>
             <tr class="login">
@@ -111,7 +126,7 @@ Initial Developer: H2 Group
             </tr>
             <tr class="login">
                 <td class="login">${text.a.password}:</td>
-                <td class="login"><input type="password" name="password" value="" style="width:200px;" /></td>
+                <td class="login"><input type="password" name="password" value="" style="width:200px;" id="krogerDbGuiConnectionPassword"/></td>
             </tr>
             <tr class="login">
                 <td class="login"></td>

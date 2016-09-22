@@ -28,10 +28,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
+import java.util.Set;
 
 import org.h2.api.ErrorCode;
 import org.h2.bnf.Bnf;
@@ -70,6 +72,18 @@ import org.h2.util.Utils;
  */
 public class WebApp {
 
+	private static final Map<String, String> DB_TYPES_TO_JDBC_DRIVER_CLASSES_MAP = new HashMap<String, String>();
+	static {
+		DB_TYPES_TO_JDBC_DRIVER_CLASSES_MAP.put("Microsoft Sql Server", "com.microsoft.sqlserver.jdbc.SQLServerDriver");
+		DB_TYPES_TO_JDBC_DRIVER_CLASSES_MAP.put("MySQL", "com.mysql.jdbc.Driver");
+		DB_TYPES_TO_JDBC_DRIVER_CLASSES_MAP.put("Oracle Thin Client", "oracle.jdbc.driver.OracleDriver");
+		DB_TYPES_TO_JDBC_DRIVER_CLASSES_MAP.put("Informix", "com.informix.jdbc.IfxDriver");
+		DB_TYPES_TO_JDBC_DRIVER_CLASSES_MAP.put("PostgreSQL", "org.postgresql.Driver");
+		DB_TYPES_TO_JDBC_DRIVER_CLASSES_MAP.put("DB2", "com.ibm.db2.jcc.DB2Driver");
+		DB_TYPES_TO_JDBC_DRIVER_CLASSES_MAP.put("DB2", "com.ibm.db2.jcc.DB2Driver");
+		DB_TYPES_TO_JDBC_DRIVER_CLASSES_MAP.put("H2", "org.h2.Driver");
+	}
+	
     /**
      * The web server.
      */
@@ -466,6 +480,7 @@ public class WebApp {
         session.put("settingsList", combobox);
         
         
+        
         ConnectionInfo info = null; 
         for (ConnectionInfo connInfo: connectionInfos) {
         	if (id != null && id.equals(connInfo.id)) {
@@ -474,6 +489,9 @@ public class WebApp {
         	}
         }
         
+        
+        String jdbcDriversComboBox = getJdbcDriversComboBox(info != null ? info.driver : "");
+        session.put("jdbcDriversList", jdbcDriversComboBox);        
         
         if (info == null) {
             info = new ConnectionInfo();
@@ -489,7 +507,29 @@ public class WebApp {
         return "index.jsp";
     }
 
-    private String getHistory() {
+    private String getJdbcDriversComboBox(String driver) {
+        StringBuilder buff = new StringBuilder();
+        
+        Set<String> dbTypes = DB_TYPES_TO_JDBC_DRIVER_CLASSES_MAP.keySet();
+        List<String> dbTypesList = new ArrayList<String>(dbTypes);
+        Collections.sort(dbTypesList);
+        
+        for (String dbType: dbTypesList) {
+            buff.append("<option value=\"").
+            append(DB_TYPES_TO_JDBC_DRIVER_CLASSES_MAP.get(dbType)).
+            append('\"');
+	        if (DB_TYPES_TO_JDBC_DRIVER_CLASSES_MAP.get(dbType).equals(driver)) {
+	            buff.append(" selected");
+	        }
+	        buff.append('>').
+	            append(PageParser.escapeHtml(dbType)).
+	            append("</option>");
+	    }
+	     
+        return buff.toString();
+	}
+
+	private String getHistory() {
         int id = Integer.parseInt(attributes.getProperty("id"));
         String sql = session.getCommand(id);
         session.put("query", PageParser.escapeHtmlData(sql));
@@ -1782,7 +1822,6 @@ public class WebApp {
         info.user = attributes.getProperty("user", "");
         info.euid = ConnectionInViewFilter.getEuid();
 
-        System.out.println("euid:" + info.euid);
         
         String idAsString = attributes.getProperty("connectionInfoId",null);
         info.id = idAsString != null && !"".equals(idAsString.trim())? Long.valueOf(idAsString) : null;
@@ -1896,13 +1935,13 @@ public class WebApp {
     }
 
     private String settingRemove() {
-        String setting = attributes.getProperty("name", "");
-        server.removeSetting(setting);
-        ArrayList<ConnectionInfo> settings = server.getSettings();
-        if (settings.size() > 0) {
-            attributes.put("setting", settings.get(0));
-        }
-        server.saveProperties(null);
+    	String idAsString = attributes.getProperty("connectionInfoId",null);
+        Long connectionInfoId = idAsString != null && !"".equals(idAsString.trim())? Long.valueOf(idAsString) : null;
+        
+        ConnectionInfoDao connectionInfoDao = new ConnectionInfoDao();
+        connectionInfoDao.deleteConnectionInfo(connectionInfoId, ConnectionInViewFilter.getEuid());
+        
+        //server.saveProperties(null);
         return "index.do";
     }
 
