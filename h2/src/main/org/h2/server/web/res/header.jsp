@@ -14,53 +14,109 @@ Initial Developer: H2 Group
     <form name="header" method="post" action="header.jsp?jsessionid=${sessionId}">
         <table class="toolbar" cellspacing="0" cellpadding="0">
             <tr class="toolbar">
-                <td class="toolbar">
+                <td rowspan="2" class="toolbar">
                     <a href="logout.do?jsessionid=${sessionId}" target="_parent">
                         <img src="icon_disconnect.gif"
                             onmouseover="this.className ='icon_hover'"
                             onmouseout="this.className ='icon'"
                             class="icon" alt="${text.toolbar.disconnect}"
-                            title="${text.toolbar.disconnect}" border="1"/>
-                    </a>
-                    <img src="icon_line.gif" class="iconLine" alt=""/>
-                    <a href="tables.do?jsessionid=${sessionId}" target="h2menu">
-                        <img src="icon_refresh.gif"
-                            onmouseover="this.className ='icon_hover'"
-                            onmouseout="this.className ='icon'"
-                            class="icon" alt="${text.toolbar.refresh}"
-                            title="${text.toolbar.refresh}" border="1"/>
-                    </a>
-                    <img src="icon_line.gif" class="iconLine" alt=""/>
+                            title="${text.toolbar.disconnect}" border="1" width="30" height="30"/>
+                            <br>
+                            </a>
                 </td>
-                <td class="toolbar">
-                    <input type="checkbox" name="autoCommit" value="autoCommit" onclick=
-                        "javascript:parent.h2result.document.location='query.do?jsessionid=${sessionId}&amp;sql=@autocommit_' + (document.header.autoCommit.checked ? 'true' : 'false') + '.';"/>
+                <td rowspan="2" class="toolbar" style="border-right:1px solid #ccc; padding-left:0px;">
+                  <a href="tables.do?jsessionid=${sessionId}" target="h2menu">
+                      <img src="icon_refresh.gif"
+                          onmouseover="this.className ='icon_hover'"
+                          onmouseout="this.className ='icon'"
+                          class="icon" alt="${text.toolbar.refresh}"
+                          title="${text.toolbar.refresh}" border="1" width="30" width="30"/>
+                          <br>
+                  </a>
                 </td>
-                <td class="toolbar">
-                    ${text.toolbar.autoCommit}&nbsp;
-                </td>
-                <td class="toolbar">
+                <td rowspan="2" class="toolbar">
                     <a href="query.do?jsessionid=${sessionId}&amp;sql=ROLLBACK" target="h2result">
                         <img src="icon_rollback.gif"
                             onmouseover="this.className ='icon_hover'"
                             onmouseout="this.className ='icon'"
                             class="icon" alt="${text.toolbar.rollback}"
-                            title="${text.toolbar.rollback}" border="1"/>
+                            title="${text.toolbar.rollback}" border="1" width="30" height="30"/>
+                            <br>
                     </a>
+                  </td>
+                    <td rowspan="2" class="toolbar" style="border-right:1px solid #ccc; padding-left:0px;">
                     <a href="query.do?jsessionid=${sessionId}&amp;sql=COMMIT" target="h2result">
                         <img src="icon_commit.gif"
                             onmouseover="this.className ='icon_hover'"
                             onmouseout="this.className ='icon'"
                             class="icon" alt="${text.toolbar.commit}"
-                            title="${text.toolbar.commit}" border="1"/>
+                            title="${text.toolbar.commit}" border="1" width="30" height="30"/>
+                            <br>
                     </a>
-                    <img src="icon_line.gif" class="iconLine" alt=""/>
                 </td>
-                <td class="toolbar">
-                    &nbsp;${text.toolbar.maxRows}:&nbsp;
+                <td rowspan="2" class="toolbar">
+                    <a href="javascript:parent.h2query.submitAll();">
+                        <img src="icon_run.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="${text.toolbar.run}"
+                            title="${text.toolbar.run}" border="1" width="30" height="30"/>
+                            <br>
+                    </a>
                 </td>
-                <td class="toolbar">
-                    <select name="rowcount" size="1" onchange=
+                <td rowspan="2" class="toolbar" style="padding:0px;">
+                    <a href="javascript:parent.h2query.submitSelected();">
+                        <img src="icon_run_selected.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="${text.toolbar.runSelected}"
+                            title="${text.toolbar.runSelected}" border="1" width="30" height="30"/>
+                            <br>
+                    </a>
+                </td>
+                <td rowspan="2" class="toolbar" >
+                    <a href="query.do?jsessionid=${sessionId}&amp;sql=@cancel." target="h2result">
+                        <img src="icon_stop.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="${text.toolbar.cancelStatement}"
+                            title="${text.toolbar.cancelStatement}" border="1" width="30" height="30"/>
+                            <br>
+                    </a>
+                  </td>
+                  <td rowspan="2" class="toolbar" style="border-right:1px solid #ccc;padding-left:0px;">
+                    <a href="query.do?jsessionid=${sessionId}&amp;sql=@history." target="h2result">
+                        <img src="icon_history.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="${text.toolbar.history}"
+                            title="${text.toolbar.history}" border="1" width="30" height="30"/>
+                            <br>
+                    </a>
+                </td>
+                                <td rowspan="2" class="toolbar" style="border-right:1px solid #ccc;">
+                ${text.toolbar.autoComplete}&nbsp;
+                    <select name="autoComplete" size="1"
+                        onchange="javascript:parent.h2query.setAutoComplete(this.value)">
+                        <option selected="selected" value="0">
+                            ${text.toolbar.autoComplete.off}
+                        </option>
+                        <option value="1">
+                            ${text.toolbar.autoComplete.normal}
+                        </option>
+                        <option value="2">
+                            ${text.toolbar.autoComplete.full}
+                        </option>
+                    </select>&nbsp;
+                </td>
+                <td class="toolbar" style="padding-right:0px;">
+                    <input type="checkbox" name="autoCommit" value="autoCommit" onclick=
+                        "javascript:parent.h2result.document.location='query.do?jsessionid=${sessionId}&amp;sql=@autocommit_' + (document.header.autoCommit.checked ? 'true' : 'false') + '.';"/>&nbsp;
+                </td>
+                <td class="toolbar" style="padding-left:0px;">${text.toolbar.autoCommit}</td>
+                <td rowspan="2" class="toolbar" style="padding:0px;">&nbsp;${text.toolbar.maxRows}:&nbsp;</td>
+                <td rowspan="2" class="toolbar">
+                     <select name="rowcount" size="1" onchange=
                     "javascript:parent.h2result.document.location='query.do?jsessionid=${sessionId}&amp;sql=@maxrows+'+header.rowcount.value+'.';">
                     <option value="0">
                             ${text.toolbar.all}
@@ -79,59 +135,18 @@ Initial Developer: H2 Group
                         </option>
                     </select>&nbsp;
                 </td>
-                <td class="toolbar">
-                    <a href="javascript:parent.h2query.submitAll();">
-                        <img src="icon_run.gif"
+                <td rowspan="2" class="toolbar"  style="border-left:1px solid #ccc;">
+                    <a href="help.jsp?jsessionid=${sessionId}" target="h2result">
+                        <img src="icon_help.gif"
                             onmouseover="this.className ='icon_hover'"
                             onmouseout="this.className ='icon'"
-                            class="icon" alt="${text.toolbar.run}"
-                            title="${text.toolbar.run}" border="1"/>
+                            class="icon" alt="${text.a.help}"
+                            title="${text.a.help}" border="1" width="30" height="30"/>
                     </a>
                 </td>
-                <td class="toolbar">
-                    <a href="javascript:parent.h2query.submitSelected();">
-                        <img src="icon_run_selected.gif"
-                            onmouseover="this.className ='icon_hover'"
-                            onmouseout="this.className ='icon'"
-                            class="icon" alt="${text.toolbar.runSelected}"
-                            title="${text.toolbar.runSelected}" border="1"/>
-                    </a>
-                </td>
-                <td class="toolbar">
-                    <a href="query.do?jsessionid=${sessionId}&amp;sql=@cancel." target="h2result">
-                        <img src="icon_stop.gif"
-                            onmouseover="this.className ='icon_hover'"
-                            onmouseout="this.className ='icon'"
-                            class="icon" alt="${text.toolbar.cancelStatement}"
-                            title="${text.toolbar.cancelStatement}" border="1"/>
-                    </a>
-                    <img src="icon_line.gif" class="iconLine" alt=""/>
-                    <a href="query.do?jsessionid=${sessionId}&amp;sql=@history." target="h2result">
-                        <img src="icon_history.gif"
-                            onmouseover="this.className ='icon_hover'"
-                            onmouseout="this.className ='icon'"
-                            class="icon" alt="${text.toolbar.history}"
-                            title="${text.toolbar.history}" border="1"/>
-                    </a>
-                    <img src="icon_line.gif" class="iconLine" alt=""/>
-                </td>
-                <td class="toolbar">
-                    ${text.toolbar.autoComplete}&nbsp;
-                    <select name="autoComplete" size="1"
-                        onchange="javascript:parent.h2query.setAutoComplete(this.value)">
-                        <option selected="selected" value="0">
-                            ${text.toolbar.autoComplete.off}
-                        </option>
-                        <option value="1">
-                            ${text.toolbar.autoComplete.normal}
-                        </option>
-                        <option value="2">
-                            ${text.toolbar.autoComplete.full}
-                        </option>
-                    </select>&nbsp;
-                </td>
-                <td class="toolbar">
-                    ${text.toolbar.autoSelect}&nbsp;
+            </tr>
+            <tr class="toolbar">
+              <td colspan="2" class="toolbar" style="padding-top:0px;">${text.toolbar.autoSelect}&nbsp;
                     <select name="autoSelect" size="1"
                         onchange="javascript:parent.h2query.setAutoSelect(this.value)">
                         <option value="0">
@@ -140,17 +155,7 @@ Initial Developer: H2 Group
                         <option selected="selected" value="1">
                             ${text.toolbar.autoSelect.on}
                         </option>
-                    </select>
-                </td>
-                <td class="toolbar">
-                    <a href="help.jsp?jsessionid=${sessionId}" target="h2result">
-                        <img src="icon_help.gif"
-                            onmouseover="this.className ='icon_hover'"
-                            onmouseout="this.className ='icon'"
-                            class="icon" alt="${text.a.help}"
-                            title="${text.a.help}" border="1"/>
-                    </a>
-                </td>
+                    </select></td>
             </tr>
         </table>
     </form>
