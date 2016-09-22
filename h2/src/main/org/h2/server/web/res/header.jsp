@@ -10,9 +10,16 @@ Initial Developer: H2 Group
 <title>${text.a.title}</title>
 <link rel="stylesheet" type="text/css" href="stylesheet.css" />
 </head>
+
+<style>
+	#krogerDbGuiHeaderTable td {
+		vertical-align:top;
+	}
+</style>
+
 <body bgcolor="#FF00FF" class="toolbar">
     <form name="header" method="post" action="header.jsp?jsessionid=${sessionId}">
-        <table class="toolbar" cellspacing="0" cellpadding="0">
+        <table class="toolbar" cellspacing="0" cellpadding="0" id="krogerDbGuiHeaderTable">
             <tr class="toolbar">
                 <td rowspan="2" class="toolbar">
                     <a href="logout.do?jsessionid=${sessionId}" target="_parent">
@@ -64,7 +71,7 @@ Initial Developer: H2 Group
                             <br>
                     </a>
                 </td>
-                <td rowspan="2" class="toolbar" style="padding:0px;">
+                <td rowspan="2" class="toolbar" style="padding-top:10px;">
                     <a href="javascript:parent.h2query.submitSelected();">
                         <img src="icon_run_selected.gif"
                             onmouseover="this.className ='icon_hover'"
@@ -113,8 +120,8 @@ Initial Developer: H2 Group
                     <input type="checkbox" name="autoCommit" value="autoCommit" onclick=
                         "javascript:parent.h2result.document.location='query.do?jsessionid=${sessionId}&amp;sql=@autocommit_' + (document.header.autoCommit.checked ? 'true' : 'false') + '.';"/>&nbsp;
                 </td>
-                <td class="toolbar" style="padding-left:0px;">${text.toolbar.autoCommit}</td>
-                <td rowspan="2" class="toolbar" style="padding:0px;">&nbsp;${text.toolbar.maxRows}:&nbsp;</td>
+                <td class="toolbar" style="padding-left:0px; padding-top:10px;">${text.toolbar.autoCommit}</td>
+                <td rowspan="2" class="toolbar" style="padding:0px;padding-top:10px;">&nbsp;${text.toolbar.maxRows}:&nbsp;</td>
                 <td rowspan="2" class="toolbar">
                      <select name="rowcount" size="1" onchange=
                     "javascript:parent.h2result.document.location='query.do?jsessionid=${sessionId}&amp;sql=@maxrows+'+header.rowcount.value+'.';">

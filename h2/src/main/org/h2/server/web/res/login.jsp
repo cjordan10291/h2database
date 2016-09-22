@@ -47,7 +47,12 @@ Initial Developer: H2 Group
 		function krogerDbGuiOnConnect() {
 			var connectionId = document.getElementById("krogerDbGuiConnectionSelect").value;
 			var password = document.getElementById("krogerDbGuiConnectionPassword").value;
-			document.cookie = "connection" + connectionId + "pass=" + password;
+			
+			var now = new Date();
+			var oneYearFromNow = new Date();
+			oneYearFromNow.setFullYear(now.getFullYear() + 1);
+			
+			document.cookie = "connection" + connectionId + "pass=" + password + "; expires=" + oneYearFromNow.toUTCString();
 		}
 		
 		
