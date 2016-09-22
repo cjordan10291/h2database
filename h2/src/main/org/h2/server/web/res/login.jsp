@@ -61,7 +61,7 @@ Initial Developer: H2 Group
 		}
 	</script>
 
-
+	<div style="text-align:center;">
 
     <form name="login" method="post" action="login.do?jsessionid=${sessionId}" id="login">
 
@@ -186,4 +186,6 @@ Initial Developer: H2 Group
         </div>
         <p class="error">${error}</p>
     </form>
+    
+    </div>
 </body></html>
